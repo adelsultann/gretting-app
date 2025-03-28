@@ -50,11 +50,25 @@ export default function DesignPage() {
   }
 
   return (
+
+    
     <section className="min-h-screen bg-[#2B2B2B] text-white px-4 py-10">
       <div className="max-w-5xl mx-auto text-center">
-        <h1 className="text-2xl font-bold mb-4">اختر تصميم</h1>
-        <div className="w-24 h-1 bg-[#F8D57E] mx-auto mb-8 rounded-full" />
 
+        
+        <h2 className="text-2xl font-bold mb-3">اختر التصميم ثم انقر على التاللي</h2>
+        <div className="w-24 h-1 bg-[#F8D57E] mx-auto  rounded-full" />
+        <button
+          onClick={handleNext}
+          disabled={!selectedId}
+          className={`m-8 bg-[#F8D57E] text-black font-semibold px-6 py-2 rounded-lg transition-all ${
+            !selectedId ? "opacity-50 cursor-not-allowed" : "hover:opacity-90"
+          }`}
+        >
+          التالي
+        </button>
+
+      
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           {templates.map((template) => (
             <div
@@ -77,15 +91,7 @@ export default function DesignPage() {
           ))}
         </div>
 
-        <button
-          onClick={handleNext}
-          disabled={!selectedId}
-          className={`mt-8 bg-[#F8D57E] text-black font-semibold px-6 py-2 rounded-lg transition-all ${
-            !selectedId ? "opacity-50 cursor-not-allowed" : "hover:opacity-90"
-          }`}
-        >
-          التالي
-        </button>
+        
       </div>
     </section>
   );

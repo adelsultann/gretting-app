@@ -25,14 +25,14 @@ export default function OccasionPage() {
   const router = useRouter();
 
   const handleSelect = (id: string) => {
-    router.push(`/design?occasion=${id}`);
+    router.push(`/designSelection?occasion=${id}`);
   };
 
   return (
     <section className="min-h-screen bg-[#2B2B2B] text-white px-4 py-10">
       <div className="max-w-5xl mx-auto text-center">
-        <h1 className="text-2xl font-bold mb-8">اختر المناسبة</h1>
-
+      <h1 className="text-2xl font-bold mb-4">اختر المناسبة</h1>
+        <div className="w-24 h-1 bg-[#F8D57E] mx-auto mb-8 rounded-full" />
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           {occasions.map((occasion) => (
             <div
