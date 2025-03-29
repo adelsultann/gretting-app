@@ -23,9 +23,9 @@ export default function Navbar() {
       
 
       <div className="inline-block relative z-10">
-        <a href="/">
+        <Link href="/">
           <span className=" text-white hover:text-[#F8D57E] cursor-pointer transition-colors duration-300">تواصل معنا</span>
-        </a>
+        </Link>
       </div>
     </div>
 

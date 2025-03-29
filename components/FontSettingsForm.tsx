@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React from "react";
 import "@fontsource/cairo"; // Import Google Fonts
 import "@fontsource/amiri";
 import "@fontsource/noto-kufi-arabic";
