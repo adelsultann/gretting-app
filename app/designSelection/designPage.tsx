@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import designTemplatesByOccasion from "../designTemplatesByOccasion"
-import { Suspense } from "react";
 
 
 
