@@ -1,80 +1,80 @@
-"use client";
+// "use client";
 
-import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+// import Image from "next/image";
+// import { useRouter, useSearchParams } from "next/navigation";
+// import { useState } from "react";
 
-import Design1 from "@/public/assets/Eid-alftar_design/design1.png"
+// import Design1 from "@/public/assets/Eid-alftar_design/design1.png"
 
-import Design2 from "@/public/assets/Eid-alftar_design/design2.png"
+// import Design2 from "@/public/assets/Eid-alftar_design/design2.png"
 
-import Design3 from "@/public/assets/Eid-alftar_design/design3.png"
+// import Design3 from "@/public/assets/Eid-alftar_design/design3.png"
 
-import Design4 from "@/public/assets/Eid-alftar_design/design4.png"
+// import Design4 from "@/public/assets/Eid-alftar_design/design4.png"
 
-import Design5 from "@/public/assets/Eid-alftar_design/design5.png"
+// import Design5 from "@/public/assets/Eid-alftar_design/design5.png"
 
-// Mock images (you can group them per occasion later)
-const templates = [
-  { id: "1", title: "تصميم 1", image: Design1},
-  { id: "2", title: "تصميم 2", image: Design2 },
-  { id: "3", title: "تصميم 3", image: Design3},
-  { id: "4", title: "تصميم 4", image: Design4 },
-  { id: "5", title: "تصميم 5", image: Design5 },
+// // Mock images (you can group them per occasion later)
+// const templates = [
+//   { id: "1", title: "تصميم 1", image: Design1},
+//   { id: "2", title: "تصميم 2", image: Design2 },
+//   { id: "3", title: "تصميم 3", image: Design3},
+//   { id: "4", title: "تصميم 4", image: Design4 },
+//   { id: "5", title: "تصميم 5", image: Design5 },
   
-];
+// ];
 
-export default function DesignPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const occasion = searchParams.get("occasion");
+// export default function DesignPage() {
+//   const router = useRouter();
+//   const searchParams = useSearchParams();
+//   const occasion = searchParams.get("occasion");
 
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+//   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const handleNext = () => {
-    if (selectedId) {
-      router.push(`/preview?design=${selectedId}&occasion=${occasion}`);
-    }
-  };
+//   const handleNext = () => {
+//     if (selectedId) {
+//       router.push(`/preview?design=${selectedId}&occasion=${occasion}`);
+//     }
+//   };
 
-  return (
-    <section className="min-h-screen bg-[#2B2B2B] text-white px-4 py-10">
-      <div className="max-w-5xl mx-auto text-center">
-        <h1 className="text-2xl font-bold mb-4">اختر تصميم</h1>
-        <div className="w-24 h-1 bg-[#F8D57E] mx-auto mb-8 rounded-full" />
+//   return (
+//     <section className="min-h-screen bg-[#2B2B2B] text-white px-4 py-10">
+//       <div className="max-w-5xl mx-auto text-center">
+//         <h1 className="text-2xl font-bold mb-4">اختر تصميم</h1>
+//         <div className="w-24 h-1 bg-[#F8D57E] mx-auto mb-8 rounded-full" />
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-          {templates.map((template) => (
-            <div
-              key={template.id}
-              onClick={() => setSelectedId(template.id)}
-              className={`cursor-pointer rounded-xl overflow-hidden bg-[#484747] border-4 transition-all ${
-                selectedId === template.id ? "border-[#F8D57E]" : "border-transparent"
-              }`}
-            >
-              <div className="relative w-full h-90">
-                <Image
-                  src={template.image}
-                  alt={template.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <p className="py-2 text-sm font-medium">{template.title}</p>
-            </div>
-          ))}
-        </div>
+//         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+//           {templates.map((template) => (
+//             <div
+//               key={template.id}
+//               onClick={() => setSelectedId(template.id)}
+//               className={`cursor-pointer rounded-xl overflow-hidden bg-[#484747] border-4 transition-all ${
+//                 selectedId === template.id ? "border-[#F8D57E]" : "border-transparent"
+//               }`}
+//             >
+//               <div className="relative w-full h-90 lg:h-135">
+//                 <Image
+//                   src={template.image}
+//                   alt={template.title}
+//                   fill
+//                   className="object-cover"
+//                 />
+//               </div>
+//               <p className="py-2 text-sm font-medium">{template.title}</p>
+//             </div>
+//           ))}
+//         </div>
 
-        <button
-          onClick={handleNext}
-          disabled={!selectedId}
-          className={`mt-8 bg-[#F8D57E] text-black font-semibold px-6 py-2 rounded-lg transition-all ${
-            !selectedId ? "opacity-50 cursor-not-allowed" : "hover:opacity-90"
-          }`}
-        >
-          التالي
-        </button>
-      </div>
-    </section>
-  );
-}
+//         <button
+//           onClick={handleNext}
+//           disabled={!selectedId}
+//           className={`mt-8 bg-[#F8D57E] text-black font-semibold px-6 py-2 rounded-lg transition-all ${
+//             !selectedId ? "opacity-50 cursor-not-allowed" : "hover:opacity-90"
+//           }`}
+//         >
+//           التالي
+//         </button>
+//       </div>
+//     </section>
+//   );
+// }

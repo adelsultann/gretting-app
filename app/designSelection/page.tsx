@@ -4,27 +4,22 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-// Eid al-Fitr templates
-import Eid1 from "@/public/assets/Eid-alftar_design/design1.png";
-import Eid2 from "@/public/assets/Eid-alftar_design/design2.png";
-import Eid3 from "@/public/assets/Eid-alftar_design/design3.png";
-import Eid4 from "@/public/assets/Eid-alftar_design/design4.png";
-import Eid5 from "@/public/assets/Eid-alftar_design/design5.png";
+import designTemplatesByOccasion from "../designTemplatesByOccasion"
 
 // Add more groups later (e.g., Eid Adha, Graduation, etc.)
 
-const designTemplatesByOccasion: Record<
-  string,
-  { id: string; title: string; image: any }[]
-> = {
-  "eid-fitr": [
-    { id: "1", title: "تصميم 1", image: Eid1 },
-    { id: "2", title: "تصميم 2", image: Eid2 },
-    { id: "3", title: "تصميم 3", image: Eid3 },
-    { id: "4", title: "تصميم 4", image: Eid4 },
-    { id: "5", title: "تصميم 5", image: Eid5 },
-  ],
-};
+// const designTemplatesByOccasion: Record<
+//   string,
+//   { id: string; title: string; image: any }[]
+// > = {
+//   "eid-fitr": [
+//     { id: "1", title: "تصميم 1", image: Eid1 },
+//     { id: "2", title: "تصميم 2", image: Eid2 },
+//     { id: "3", title: "تصميم 3", image: Eid3 },
+//     { id: "4", title: "تصميم 4", image: Eid4 },
+//     { id: "5", title: "تصميم 5", image: Eid5 },
+//   ],
+// };
 
 export default function DesignPage() {
   const router = useRouter();
@@ -44,7 +39,7 @@ export default function DesignPage() {
   if (!occasion || templates.length === 0) {
     return (
       <section className="min-h-screen flex items-center justify-center bg-[#2B2B2B] text-white text-xl">
-        لا توجد تصاميم متاحة لهذه المناسبة.
+          لا توجد تصاميم متاحة لهذه المناسبة.
       </section>
     );
   }
@@ -78,7 +73,7 @@ export default function DesignPage() {
                 selectedId === template.id ? "border-[#F8D57E]" : "border-transparent"
               }`}
             >
-              <div className="relative w-full h-85">
+              <div className="relative w-full h-90 sm:h-135">
                 <Image
                   src={template.image}
                   alt={template.title}

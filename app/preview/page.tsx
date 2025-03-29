@@ -10,27 +10,24 @@ import {  useState } from "react";
 // import Design5 from "@/public/assets/Eid-alftar_design/design5.png";
 // import FabricCard from "@/components/canvas/FabricCard";
 
+
 import eidElftarDesigns from "./designs-templates";
 import FabricCard from "@/components/canvas/FabricCard";
 
-// const eidDesigns = {
-//   "1": Design1,
-//   "2": Design2,
-//   "3": Design3,
-//   "4": Design4,
-//   "5": Design5,
-// };
 
-
+import designTemplatesByOccasion from "../designTemplatesByOccasion"
 
 export default function PreviewPage() {
      const searchParams = useSearchParams();
      const designId = searchParams.get("design");
      const occasion = searchParams.get("occasion");
+
    
      const [name, setName] = useState("محمد علي");
    
-     const selectedImage = eidElftarDesigns[designId as keyof typeof eidElftarDesigns];
+     const selectedImage = designTemplatesByOccasion[occasion as string]?.find(
+          (design) => design.id === designId
+        );
    
      if (!selectedImage) {
        return <div className="text-white p-10 text-center">لم يتم العثور على التصميم</div>;
@@ -48,7 +45,7 @@ export default function PreviewPage() {
              placeholder="اكتب اسمك هنا"
            />
    
-   <FabricCard backgroundImage={selectedImage.src} userName={name} 
+   <FabricCard backgroundImage={selectedImage.image.src} userName={name} 
    
    />
 

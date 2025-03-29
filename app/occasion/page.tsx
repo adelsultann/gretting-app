@@ -25,6 +25,7 @@ export default function OccasionPage() {
   const router = useRouter();
 
   const handleSelect = (id: string) => {
+    //the router hook provide various properties to navigate between pages suc
     router.push(`/designSelection?occasion=${id}`);
   };
 
@@ -40,7 +41,8 @@ export default function OccasionPage() {
               className="cursor-pointer rounded-lg overflow-hidden bg-[#484747] hover:scale-105 transition-transform"
               onClick={() => handleSelect(occasion.id)}
             >
-              <div className="relative w-full h-90">
+              <div className="relative w-full h-90 lg:h-120
+              ">
                 <Image
                   src={occasion.image}
                   alt={occasion.title}

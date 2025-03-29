@@ -11,35 +11,25 @@ type FabricCardProps = {
 };
 
 export default function FabricCard({ userName, backgroundImage }: FabricCardProps) {
-
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const nameTextRef = useRef<fabric.Text | null>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
 
-  // font settings
   const [fontFamily, setFontFamily] = useState("Noto Kufi Arabic");
   const [fontSize, setFontSize] = useState(28);
   const [fontColor, setFontColor] = useState("#000000");
   const [fontWeight, setFontWeight] = useState("bold");
 
-// use effect for loading image and adding text
-
   useEffect(() => {
-     const initCanvas = async () => {
-       if (!canvasRef.current) return;
- 
-       const canvas = new fabric.Canvas(canvasRef.current, {
-         width: 500,
-         height: 700,
-         selection: false,
-       });
-       fabricCanvasRef.current = canvas;
-      
+    const initCanvas = async () => {
+      if (!canvasRef.current) return;
 
-     //  const absoluteImageUrl = backgroundImage.startsWith("http")
-     //    ? backgroundImage
-     //    : `${window.location.origin}${backgroundImage}`;
+      const canvas = new fabric.Canvas(canvasRef.current, {
+        width: 500,
+        height: 700,
+        selection: true, // Enable selection for text editing
+      });
+      fabricCanvasRef.current = canvas;
 
       try {
         const img = await fabric.Image.fromURL(backgroundImage);
@@ -56,11 +46,11 @@ export default function FabricCard({ userName, backgroundImage }: FabricCardProp
           fontWeight: fontWeight,
           fontFamily: fontFamily,
         });
-        
+
         nameTextRef.current = nameText;
 
         canvas.add(nameText);
-        
+        canvas.renderAll(); // Render after adding the text
       } catch (error) {
         console.error("Error loading image:", error);
       }
@@ -72,28 +62,27 @@ export default function FabricCard({ userName, backgroundImage }: FabricCardProp
     // this is clean up function |
     // when the component unmounts in this case BackgroundImage changes 
     // it will clean up the canvas before re-running the useEffect
+
     return () => {
       fabricCanvasRef.current?.dispose();
       fabricCanvasRef.current = null;
+      nameTextRef.current = null; // Clear the text ref
     };
-  }, [backgroundImage]); //  runs only when image changes
+  }, [backgroundImage]);
 
-
-  // second useEffect for updating text only
   useEffect(() => {
-     if (!nameTextRef.current) return;
- 
-     nameTextRef.current.set({
-       text: userName,
-       fontFamily,
-       fontSize,
-       fontWeight,
-       fill: fontColor,
-     });
- 
-     fabricCanvasRef.current?.renderAll();
-   }, [userName, fontFamily, fontSize, fontWeight, fontColor]);
- 
+    if (!nameTextRef.current || !fabricCanvasRef.current) return;
+
+    nameTextRef.current.set({
+      text: userName,
+      fontFamily,
+      fontSize,
+      fontWeight,
+      fill: fontColor,
+    });
+
+    fabricCanvasRef.current.renderAll();
+  }, [userName, fontFamily, fontSize, fontWeight, fontColor]);
 
   const handleDownload = () => {
     if (!fabricCanvasRef.current) return;
@@ -128,15 +117,13 @@ export default function FabricCard({ userName, backgroundImage }: FabricCardProp
           setFontWeight={setFontWeight}
         />
 
-         <button
-        onClick={handleDownload}
-        className="bg-[#F8D57E] text-black font-semibold px-3 py-2 rounded-lg hover:opacity-90 transition"
-      >
-        تحميل التصميم
-      </button>
+        <button
+          onClick={handleDownload}
+          className="bg-[#F8D57E] text-black font-semibold px-3 py-2 rounded-lg hover:opacity-90 transition"
+        >
+          تحميل التصميم
+        </button>
       </div>
-
-     
     </div>
   );
 }

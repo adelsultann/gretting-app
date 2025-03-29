@@ -65,7 +65,7 @@ export default function Hero() {
         </p>
 
         <Link className="bg-[#F8D57E] text-black font-semibold px-6 py-2 rounded-lg mt-4 hover:opacity-90 transition"
-         href={"/Selecting_design"} 
+         href={"/auth"} 
      
         >
           
