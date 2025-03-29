@@ -6,20 +6,8 @@ import { useState } from "react";
 
 import designTemplatesByOccasion from "../designTemplatesByOccasion"
 
-// Add more groups later (e.g., Eid Adha, Graduation, etc.)
 
-// const designTemplatesByOccasion: Record<
-//   string,
-//   { id: string; title: string; image: any }[]
-// > = {
-//   "eid-fitr": [
-//     { id: "1", title: "تصميم 1", image: Eid1 },
-//     { id: "2", title: "تصميم 2", image: Eid2 },
-//     { id: "3", title: "تصميم 3", image: Eid3 },
-//     { id: "4", title: "تصميم 4", image: Eid4 },
-//     { id: "5", title: "تصميم 5", image: Eid5 },
-//   ],
-// };
+
 
 export default function DesignPage() {
   const router = useRouter();
