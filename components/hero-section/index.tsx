@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 export default function Hero() {
   return (
-    <section className="flex flex-col md:flex-row items-center justify-between px-6 py-12 max-w-7xl mx-auto">
+    <section className="flex flex-col md:flex-row items-center justify-between px-6 py-11 max-w-7xl mx-auto">
     
      
       {/* Responsive Stacked Images Container */}
