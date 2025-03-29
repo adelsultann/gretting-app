@@ -31,9 +31,9 @@ export default function Navbar() {
 
   
 
-    <a href="/" className="w-fit h-fit  justify-center text-l font-bold text-white-800 ">
+    <Link href="/" className="w-fit h-fit  justify-center text-l font-bold text-white-800 ">
       تهنئتي
-    </a>
+    </Link>
   </div>
 </header>
   );
