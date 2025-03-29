@@ -14,6 +14,8 @@ import {  useState } from "react";
 import eidElftarDesigns from "./designs-templates";
 import FabricCard from "@/components/canvas/FabricCard";
 
+import { useOrg } from "../context/OrgContext";
+
 
 import designTemplatesByOccasion from "../designTemplatesByOccasion"
 
@@ -22,7 +24,8 @@ export default function PreviewPage() {
      const designId = searchParams.get("design");
      const occasion = searchParams.get("occasion");
 
-   
+     
+     const { org } = useOrg(); // ✅ grab org context
      const [name, setName] = useState("محمد علي");
    
      const selectedImage = designTemplatesByOccasion[occasion as string]?.find(
@@ -34,22 +37,24 @@ export default function PreviewPage() {
      }
    
      return (
-       <section className="min-h-screen bg-[#2B2B2B] text-white px-4 py-10">
-         <div className="max-w-4xl mx-auto text-center">
-           <h1 className="text-2xl font-bold mb-3">يرجى أدخال الاسم</h1>
-           <div className="w-24 h-1 bg-[#F8D57E] mx-auto mb-4 rounded-full" />
-           <input
-             value={name}
-             onChange={(e) => setName(e.target.value)}
-             className="px-4 py-2 rounded-md bg-[#484747] text-white outline-none w-full max-w-xs text-center mx-auto mb-6"
-             placeholder="اكتب اسمك هنا"
-           />
-   
-   <FabricCard backgroundImage={selectedImage.image.src} userName={name} 
-   
-   />
-
-         </div>
-       </section>
-     );
-   }
+          <section className="min-h-screen bg-[#2B2B2B] text-white px-4 py-10">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-2xl font-bold mb-3">يرجى أدخال الاسم</h1>
+              <div className="w-24 h-1 bg-[#F8D57E] mx-auto mb-4 rounded-full" />
+      
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="px-4 py-2 rounded-md bg-[#484747] text-white outline-none w-full max-w-xs text-center mx-auto mb-6"
+                placeholder="اكتب اسمك هنا"
+              />
+      
+              <FabricCard
+                backgroundImage={selectedImage.image.src}
+                userName={name}
+                companyLogo={org?.logoUrl ?? null} // ✅ pass logo to FabricCard
+              />
+            </div>
+          </section>
+        );
+      }

@@ -8,9 +8,10 @@ import "@fontsource/noto-kufi-arabic";
 type FabricCardProps = {
   userName: string;
   backgroundImage: string;
+  companyLogo?: string | null;
 };
 
-export default function FabricCard({ userName, backgroundImage }: FabricCardProps) {
+export default function FabricCard({ userName, backgroundImage,companyLogo}: FabricCardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const nameTextRef = useRef<fabric.Text | null>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
@@ -31,6 +32,8 @@ export default function FabricCard({ userName, backgroundImage }: FabricCardProp
       });
       fabricCanvasRef.current = canvas;
 
+      
+
       try {
         const img = await fabric.Image.fromURL(backgroundImage);
         img.scaleToWidth(canvas.getWidth());
@@ -48,6 +51,20 @@ export default function FabricCard({ userName, backgroundImage }: FabricCardProp
         });
 
         nameTextRef.current = nameText;
+
+
+        if (companyLogo) {
+          const logoImg = await fabric.Image.fromURL(companyLogo);
+          logoImg.scaleToWidth(80); // logo size
+          logoImg.set({
+            left: 20,
+            top: 20,
+            selectable: false, // prevent user from dragging logo
+          });
+          canvas.add(logoImg);
+          canvas.renderAll();
+        }
+      
 
         canvas.add(nameText);
         canvas.renderAll(); // Render after adding the text
