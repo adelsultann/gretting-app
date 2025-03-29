@@ -1,6 +1,6 @@
 
 
-
+import { StaticImageData } from 'next/image'; // Import StaticImageData
 
 import Design1 from "@/public/assets/Eid-alftar_design/design1.png";
 import Design2 from "@/public/assets/Eid-alftar_design/design2.png";
@@ -19,7 +19,7 @@ import Design9 from "@/public/assets/Eid-alftar_design/design9.png";
 
 const designTemplatesByOccasion: Record<
   string,
-  { id: string; title: string; image: any }[]
+  { id: string; title: string; image: StaticImageData  }[]
 > = {
   "eid-fitr": [
     { id: "1", title: "تصميم 1", image: Design1 },

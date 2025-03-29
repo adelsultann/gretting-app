@@ -11,10 +11,9 @@ import {  useState } from "react";
 // import FabricCard from "@/components/canvas/FabricCard";
 
 
-import eidElftarDesigns from "./designs-templates";
 import FabricCard from "@/components/canvas/FabricCard";
 
-import { useOrg } from "../context/OrgContext";
+// import { useOrg } from "../context/OrgContext";
 
 
 import designTemplatesByOccasion from "../designTemplatesByOccasion"
@@ -25,7 +24,7 @@ export default function PreviewPage() {
      const occasion = searchParams.get("occasion");
 
      
-     const { org } = useOrg(); // ✅ grab org context
+    //  const { org } = useOrg(); // ✅ grab org context
      const [name, setName] = useState("محمد علي");
    
      const selectedImage = designTemplatesByOccasion[occasion as string]?.find(
@@ -52,7 +51,9 @@ export default function PreviewPage() {
               <FabricCard
                 backgroundImage={selectedImage.image.src}
                 userName={name}
-                companyLogo={org?.logoUrl ?? null} // ✅ pass logo to FabricCard
+                  // ✅ pass logo to FabricCard
+                // companyLogo={org?.logoUrl ?? null}
+               
               />
             </div>
           </section>
