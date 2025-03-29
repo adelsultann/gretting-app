@@ -8,7 +8,7 @@ import 'swiper/css';
 import { Autoplay } from 'swiper/modules';
 import { FaStar } from 'react-icons/fa6';
 import { testimonialData } from './Testimonial';
-
+import ProfileImg from "@/public/user.png"; // Import ProfileImg
 const Testimonials = () => {
   return (
     <div className="w-full h-full space-y-5 relative lg:px-24 md:px-16 sm:px-7 px-4 flex items-center justify-center flex-col">
@@ -32,7 +32,7 @@ const Testimonials = () => {
                 <div className="w-full flex items-center justify-center">
                   <div className="flex flex-col items-center gap-3">
                     <img
-                      src={item.img}
+                      src={ProfileImg.src}
                       alt={item.name}
                       className="w-12 h-12 object-center object-cover rounded-full border"
                     />
