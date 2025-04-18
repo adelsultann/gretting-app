@@ -26,7 +26,7 @@ export default function AuthPage() {
     e.preventDefault();
     setError("");
 
-    if (!email || !password || (!isRegister && !companyName)) {
+    if (!email || !password ) {
       setError("من فضلك أدخل جميع البيانات");
       return;
     
@@ -68,7 +68,6 @@ export default function AuthPage() {
     const errorCode = err.code;
     console.error("Firebase Auth Error:", errorCode, err.message);
 
-    // Your existing logic for specific codes:
     if (errorCode === 'auth/email-already-in-use') {
       errorMessage = "❌ This email address is already registered.";
     } else if (errorCode === 'auth/weak-password') {
@@ -144,10 +143,10 @@ export default function AuthPage() {
 
           
 
-<p>       
+  
      {isRegister ? "هل لديك حساب؟"
             : "ليس لديك حساب؟"}{" "}
-</p>
+  <br></br>
            <button
              type="button"
              onClick={() => setIsRegister(!isRegister)}

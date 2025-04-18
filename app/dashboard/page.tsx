@@ -8,6 +8,7 @@ import { auth, db } from "@/lib/firebase"; // Adjust path if needed
 import { onAuthStateChanged, signOut, User } from "firebase/auth"; // Import User type
 import { doc,  getDoc, Timestamp, updateDoc } from "firebase/firestore"; // Import updateDoc, Timestamp
 import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
+import { FirebaseError } from "firebase/app";
 
 
 
@@ -158,13 +159,30 @@ export default function DashboardPage() {
       }
 
       alert("Data saved successfully!");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error saving data:", error);
-      setErrorMessage(`Failed to save data: ${error.message}`);
-    } finally {
-      setSaving(false);
+      let message = "An unexpected error occurred."; 
+       // Check for specific error types
+    if (error instanceof FirebaseError) {
+      // Handle Firebase specific errors (from updateDoc)
+      message = `Firestore error: ${error.message} (Code: ${error.code})`;
+    } else if (error instanceof Error) {
+      // Handle standard JavaScript errors (could be from Cloudinary or elsewhere)
+      message = error.message;
+    } else if (typeof error === 'string') {
+      // Handle cases where a string was thrown
+      message = error;
     }
-  };
+
+    // Set the user-facing error message
+    setErrorMessage(`Failed to save data: ${message}`);
+
+  } finally {
+    setSaving(false);
+  }
+};
+    
+  
 
   const handleLogout = async () => {
     // Clear local state related to user/org if needed
