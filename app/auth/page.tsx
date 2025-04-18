@@ -3,10 +3,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {  createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "@/lib/firebase"; // Adjust path if needed
+import {  createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
+import { auth, db, } from "@/lib/firebase"; // Adjust path if needed
 import { doc, setDoc, Timestamp } from "firebase/firestore"; // Import Timestamp
 import { v4 as uuidv4 } from 'uuid'; // Import uuid library (install: npm install uuid @types/uuid)
+import { FirebaseError } from '@firebase/util'
+
+
+
+
+
 
 export default function AuthPage() {
   const [isRegister, setIsRegister] = useState(false);
@@ -20,8 +26,8 @@ export default function AuthPage() {
     e.preventDefault();
     setError("");
 
-    if (isRegister && !/^[a-zA-Z0-9\s\-\_\.]+$/.test(companyName)) {
-      setError("❌ Company name must not contain special symbols like @, #, $, etc.");
+    if (!email || !password || (!isRegister && !companyName)) {
+      setError("من فضلك أدخل جميع البيانات");
       return;
     
     }
@@ -55,23 +61,36 @@ export default function AuthPage() {
         
         router.push("/dashboard");
       }
-    } catch (err: any) { // Better error typing
-        const errorCode = err.code;
-        // Provide more specific Firebase Auth errors if desired
-        if (errorCode === 'auth/email-already-in-use') {
-            setError("❌ This email address is already registered.");
-        } else if (errorCode === 'auth/weak-password') {
-            setError("❌ The password is too weak.");
-        } else if (errorCode === 'auth/invalid-email') {
-            setError("❌ Please enter a valid email address.");
-        } else if (errorCode === 'auth/invalid-credential') { // For login errors
-             setError("❌ Invalid email or password.");
-        }
-        else {
-            setError("❌ An error occurred. Please try again.");
-        }
-      console.error("Firebase Auth Error:", err);
+    } catch (err) { 
+  let errorMessage = "❌ An unexpected error occurred. Please try again."; 
+
+  if (err instanceof FirebaseError) {
+    const errorCode = err.code;
+    console.error("Firebase Auth Error:", errorCode, err.message);
+
+    // Your existing logic for specific codes:
+    if (errorCode === 'auth/email-already-in-use') {
+      errorMessage = "❌ This email address is already registered.";
+    } else if (errorCode === 'auth/weak-password') {
+      errorMessage = "❌ The password is too weak.";
+    } else if (errorCode === 'auth/invalid-email') {
+      errorMessage = "❌ Please enter a valid email address.";
+    } else if (errorCode === 'auth/invalid-credential') { // For login errors
+      errorMessage = "❌ Invalid email or password.";
+    } else {
+      // Use the Firebase error message for other Firebase errors
+      errorMessage = `❌ Error: ${err.message}`;
     }
+  } else {
+    // Handle non-Firebase errors (e.g., network issues, other exceptions)
+    console.error("Non-Firebase Error:", err);
+    // You might want to check if it's a standard Error instance
+    if (err instanceof Error) {
+        errorMessage = `❌ An unexpected error occurred: ${err.message}`;
+    }
+  }
+  setError(errorMessage); // Set the final error message
+}
   };
 
   
@@ -108,7 +127,7 @@ export default function AuthPage() {
              required
              value={companyName}
              onChange={(e) => setCompanyName(e.target.value)}
-             placeholder="Company name (English only)"
+             placeholder="اسم الشركة"
              className="w-full p-2 rounded-md bg-[#2B2B2B] text-white outline-none"
            />
          )}
@@ -124,7 +143,11 @@ export default function AuthPage() {
          <p className="text-sm text-center mt-2">
 
           
-           {isRegister ? "هل لديك حساب؟" : "ليس لديك حساب؟"}{" "}
+
+<p>       
+     {isRegister ? "هل لديك حساب؟"
+            : "ليس لديك حساب؟"}{" "}
+</p>
            <button
              type="button"
              onClick={() => setIsRegister(!isRegister)}
