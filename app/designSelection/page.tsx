@@ -12,15 +12,25 @@ export default function DesignPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const occasion = searchParams.get("occasion");
+  const orgId = searchParams.get("org"); //  Get the 'org' parameter if exist
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  // || [] = default value if occasion is null
   const templates = designTemplatesByOccasion[occasion as string] || [];
 
   const handleNext = () => {
+
+    
     if (selectedId) {
-      router.push(`/preview?design=${selectedId}&occasion=${occasion}`);
+      let queryString = `/preview?design=${selectedId}&occasion=${occasion}`;
+      if (orgId){
+        queryString += `&org=${orgId}`;
+      }
+      router.push(queryString);
     }
+
+    
   };
 
   if (!occasion || templates.length === 0) {
@@ -40,10 +50,14 @@ export default function DesignPage() {
         
         <h2 className="text-2xl font-bold mb-3">اختر التصميم ثم انقر على التاللي</h2>
         <div className="w-24 h-1 bg-[#F8D57E] mx-auto  rounded-full" />
+
+        {/* the next button  */}
         <button
           onClick={handleNext}
           disabled={!selectedId}
-          className={`m-8 bg-[#F8D57E] text-black font-semibold px-6 py-2 rounded-lg transition-all ${
+
+          className={`m-8 bg-[#F8D57E] 
+             text-black font-semibold px-6 py-2 rounded-lg transition-all ${
             !selectedId ? "opacity-50 cursor-not-allowed" : "hover:opacity-90"
           }`}
         >

@@ -58,5 +58,13 @@ export const testimonialData = [
        name: "سارة الزهراني",
        rating: 5,
      },
+
+     {
+      id: 9,
+      desc: "أتمنى اضافة صفحة خاصة للشركات",
+      img: {ProfileImg},
+      name: "Saud",
+      rating: 5,
+    },
    ];
    

@@ -1,41 +1,59 @@
+import Link from 'next/link';
+import { FaTwitter, FaInstagram, FaGithub } from 'react-icons/fa'; // Example using react-icons (install: npm install react-icons)
 export default function Footer() {
+  const currentYear = new Date().getFullYear(); 
+
   return (
-       <footer className="bg-[#282828] py-8 text-white m-1.5">
-         <div className="container mx-auto px-4">
+    <footer className="bg-[#2B2B2B] text-white mt-auto"> {/* mt-auto helps stick it to bottom if main content is short */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="flex flex-col md:flex-row-reverse justify-between items-center gap-8">
 
-           <div className="flex flex-col-reverse md:flex-row-reverse items-center justify-between">
+          {/* Left Section: Brand and Copyright */}
+          <div className="text-center">
+            <h3 className="text-2xl font-bold text-[#F8D57E]">
+              تهنئتي 
+            </h3>
 
-           <div className="mb-4 md:mb-0 text-center">
-               <h2 className="text-lg font-semibold">تهنئتي</h2>
-               <p className="text-sm">جميع الحقوق محفوظة</p>
-               <hr className='mt-1 w-full h-2' />
-             </div>
-
-             <div className="hidden md:block w-px h-20 bg-gray-600 mx-4"></div>
+            <p className="text-sm text-gray-400 mt-2">
+              &copy; {currentYear} جميع الحقوق محفوظة 
+            </p>
+          </div>
 
 
-             <a href="#" className="text-sm hover:underline mb-1">
-                 تواصل معنا
-               </a>
-             <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-5">
-               <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+          {/* Center Section: Navigation Links */}
+          <nav className="flex gap-6">
+            <Link href="/occasion" className="text-lg hover:text-[#F8D57E] transition-colors">
+              إنشاء بطاقة 
+            </Link>
+            <Link href="/auth" className="text-lg hover:text-[#F8D57E] transition-colors">
+              تسجيل الشركات 
+            </Link>
+          
+          </nav>
 
-                 <div className="flex flex-col sm:flex-row items-center gap-2">
-                      
-                   <input
-                     type="email"
-                     placeholder="البريد الإلكتروني"
-                     className="bg-[#424242] text-white rounded-md px-4 py-2 focus:outline-none w-full sm:w-64 text-right"
-                     dir="rtl"
-                   />
-                   <button className="bg-[#A084CF] text-white rounded-md px-6 py-2 w-full sm:w-auto hover:bg-[#8a6db9] transition-colors">
-                     تسجيل
-                   </button>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
-       </footer>
-     );
-   };
+          {/* Right Section: Social Links and Contact */}
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-sm font-semibold">تواصل معنا</p> 
+            
+            
+            {/* Contact Us */}
+            <div className="flex gap-4">
+              <Link href="https://x.com/Adel12342360" aria-label="Twitter" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#BFAFF2] transition-colors">
+                <FaTwitter size={20} />
+              </Link>
+              
+
+              <Link href="https://github.com/adelsultann" aria-label="Snapchat" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#BFAFF2] transition-colors">
+                <FaGithub size={20} />
+              </Link>
+            
+            </div>
+            
+              <Link href="" className="text-sm text-gray-400 hover:text-[#F8D57E]">adelalsultan647@gmail.com</Link>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+  );
+}
