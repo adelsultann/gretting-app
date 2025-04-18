@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FaTwitter, FaInstagram, FaGithub } from 'react-icons/fa'; // Example using react-icons (install: npm install react-icons)
+import { FaTwitter, FaGithub } from 'react-icons/fa'; // Example using react-icons (install: npm install react-icons)
 export default function Footer() {
   const currentYear = new Date().getFullYear(); 
 

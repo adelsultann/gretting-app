@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { auth, db } from "@/lib/firebase"; // Adjust path if needed
 import { onAuthStateChanged, signOut, User } from "firebase/auth"; // Import User type
@@ -179,7 +180,6 @@ export default function DashboardPage() {
     router.push("/auth");
   };
 
-   const shareUrl = shareableId ? `${window.location.origin}/org/${shareableId}` : "Loading link...";
 
   if (loading) return <p className="text-center text-black mt-10">Loading Dashboard...</p>;
    if (!user) return null; // Or a redirect component, although onAuthStateChanged handles it
@@ -225,11 +225,13 @@ export default function DashboardPage() {
              />
              {logoPreview && (
                 <div className="mt-3">
-                <p className="text-xs mb-1">Logo Preview:</p>
-                <img
+                <Image
                     src={logoPreview}
                     alt="Logo Preview"
                     className="w-24 h-24 object-contain rounded-md border border-gray-600 bg-gray-700" // Added bg color
+                    width={96}
+                    height={96}
+              
                 />
                 </div>
              )}
