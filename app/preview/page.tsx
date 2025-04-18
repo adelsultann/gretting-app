@@ -1,4 +1,5 @@
 // app/preview/page.tsx
+
 import PreviewClient from "./PreviewClient";
 import { getOrganizationLogoUrl } from "@/lib/getOrganizationLogoUrl";
 import { Metadata } from "next";
@@ -7,25 +8,23 @@ export const metadata: Metadata = {
   title: "Preview - Greeting App",
 };
 
+// Note: searchParams is a Promise of your shape
 export default async function PreviewPage({
   searchParams,
 }: {
-  
-  searchParams: { design?: string; occasion?: string; org?: string };
-  
+  searchParams: Promise<{
+    design?: string;
+    occasion?: string;
+    org?: string;
+  }>;
 }) {
-  // Await searchParams to ensure its properties are available
-  const sp = await Promise.resolve(searchParams);
-  const designId = sp.design;
-  const occasion = sp.occasion;
-  const orgId = sp.org;
+  // Await the searchParams promise to get the real object
+  const { design: designId, occasion, org: orgId } = await searchParams;
 
   let companyLogo: string | null = null;
   if (orgId) {
-
     companyLogo = await getOrganizationLogoUrl(orgId);
-    console.log(companyLogo,"from preiver")
-   
+    console.log("Fetched logo URL:", companyLogo);
   }
 
   return (
