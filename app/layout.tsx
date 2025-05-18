@@ -33,7 +33,7 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { page_path: window.location.
         </Script>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        
+
         {children}
       </body>
     </html>
