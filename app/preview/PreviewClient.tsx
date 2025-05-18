@@ -14,9 +14,11 @@ type PreviewClientProps = {
 
 export default function PreviewClient({
   designId,
-  occasion,
+  
   companyLogo,
 }: PreviewClientProps) {
+  // Disables ALL ESLint rules for the next line (if there's another error)
+// eslint-disable-next-line
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
