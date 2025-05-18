@@ -16,6 +16,8 @@ export default function ContributePage() {
   const [occasion, setOccasion] = useState<string>("eid-fitr");
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [user, setUser] = useState<any>(null);
 
   const router = useRouter();
@@ -65,6 +67,7 @@ export default function ContributePage() {
       setMessage("✅ Design submitted for review!");
       setImageFile(null);
       setPreviewUrl(null);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setMessage("❌ Upload failed. Please try again.");
       console.error(err);
