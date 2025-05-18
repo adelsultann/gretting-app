@@ -1,11 +1,12 @@
+// components/FabricCard.tsx
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import * as fabric from "fabric";
-import FontSettingsForm from "../FontSettingsForm";
 import "@fontsource/noto-kufi-arabic";
+import FontSettingsForm from "../FontSettingsForm";
 
-type FabricCardProps = {
+export type FabricCardProps = {
   userName: string;
   backgroundImage: string;
   companyLogo?: string | null;
@@ -13,210 +14,142 @@ type FabricCardProps = {
 
 export default function FabricCard({ userName, backgroundImage, companyLogo }: FabricCardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const nameTextRef = useRef<fabric.IText | null>(null);
-  const additionalNameTextRef = useRef<fabric.IText | null>(null);  // use IText for editable text
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
+  const [selectedObject, setSelectedObject] = useState<fabric.Object | null>(null);
 
   const [fontFamily, setFontFamily] = useState("Noto Kufi Arabic");
   const [fontSize, setFontSize] = useState(28);
-  const [fontColor, setFontColor] = useState("#000000");
+  const [fontColor, setFontColor] = useState("#222222");
   const [fontWeight, setFontWeight] = useState("bold");
-  
 
-  // Initialize canvas and add main objects
+  // Helper: load image element with crossOrigin
+  const loadImageElement = (url: string): Promise<HTMLImageElement> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => resolve(img);
+      img.onerror = (e) => reject(e);
+      img.src = url;
+    });
+  };
+
   useEffect(() => {
-    const initCanvas = async () => {
-      if (!canvasRef.current) return;
+    if (!canvasRef.current) return;
+    const canvas = new fabric.Canvas(canvasRef.current, { width: 500, height: 700, selection: true });
+    fabricCanvasRef.current = canvas;
 
-    
-     
-
-
-      const canvas = new fabric.Canvas(canvasRef.current, {
-        width: 500,
-        height: 700,
-        selection: true,
-      });
-      fabricCanvasRef.current = canvas;
-
+    (async () => {
       try {
-        const img = await fabric.Image.fromURL(backgroundImage);
-        img.scaleToWidth(canvas.getWidth());
-        canvas.backgroundImage = img;
-        canvas.renderAll();
+        // Background image
+        const bgEl = await loadImageElement(backgroundImage);
+        const bgImg = new fabric.Image(bgEl);
+        bgImg.scaleToWidth(canvas.getWidth());
+        canvas.backgroundImage = bgImg;
+        canvas.requestRenderAll();
 
-        // Create main text as fabric.Text (or fabric.IText if you want inline editing)
+        // Main user name text
         const nameText = new fabric.IText(userName, {
           left: 100,
           top: 500,
+          fontFamily,
+          fontSize,
           fill: fontColor,
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-          fontFamily: fontFamily,
+          fontWeight,
         });
-        nameTextRef.current = nameText;
         canvas.add(nameText);
+        //canvas.setActiveObject(nameText);
 
-        // Add company logo if available
+        // Company logo
         if (companyLogo) {
-          const logoImg = await fabric.Image.fromURL(companyLogo);
+          const logoEl = await loadImageElement(companyLogo);
+          const logoImg = new fabric.Image(logoEl);
           logoImg.scaleToWidth(100);
-          logoImg.set({
-            left: 100,
-            top: 100,
-            selectable: true,
-          });
+          logoImg.set({ left: 20, top: 20, selectable: true, hasControls: true });
           canvas.add(logoImg);
         }
 
-        canvas.renderAll();
       } catch (error) {
-        console.error("Error loading image:", error);
+        console.error("Error loading images:", error);
+      }
+    })();
+
+    // Handle selection
+    const updateSelection = () => setSelectedObject(canvas.getActiveObject() ?? null);
+    canvas.on('selection:created', updateSelection);
+    canvas.on('selection:updated', updateSelection);
+    canvas.on('selection:cleared', () => setSelectedObject(null));
+
+    // Delete key
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const active = canvas.getActiveObject();
+      if ((e.key === 'Delete') && active) {
+        canvas.remove(active);
+        canvas.discardActiveObject();
+        canvas.requestRenderAll();
       }
     };
-
-    initCanvas();
+    document.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      fabricCanvasRef.current?.dispose();
+      document.removeEventListener('keydown', handleKeyDown);
+      canvas.dispose();
       fabricCanvasRef.current = null;
-      nameTextRef.current = null;
-      additionalNameTextRef.current = null;
     };
-  }, [backgroundImage]);
+  }, [backgroundImage, companyLogo]);
 
-  // Update the main text when dependencies change
+  // Update selected object style
   useEffect(() => {
-    if (!nameTextRef.current || !fabricCanvasRef.current ) 
-      return;
+    const canvas = fabricCanvasRef.current;
+    if (!canvas || !selectedObject || !(selectedObject instanceof fabric.IText)) return;
+    selectedObject.set({ fontFamily, fontSize, fill: fontColor, fontWeight });
+    canvas.requestRenderAll();
+  }, [fontFamily, fontSize, fontColor, fontWeight, selectedObject]);
 
-
-    
-
-    nameTextRef.current.set({
-      text: nameTextRef.current.text,
-      fontFamily,
-      fontSize,
-      fontWeight,
-      fill: fontColor,
-    });
-
-    additionalNameTextRef.current?.set({
-      text: additionalNameTextRef.current.text,
-      fontFamily,
-      fontSize,
-      fontWeight,
-      fill: fontColor,
-    });
-
-    fabricCanvasRef.current.renderAll();
-  }, [nameTextRef.current, fontFamily, fontSize, fontWeight, fontColor,additionalNameTextRef.current?.text]);
-
-  // Function to add an additional editable IText
+  // Add additional text
   const handleAddAdditionalText = () => {
     const canvas = fabricCanvasRef.current;
     if (!canvas) return;
-
-    // Create additional text as an IText instance for easier inline editing
-    const additionalText = new fabric.IText("نص إضافي", {
-      left: 50,
-      top: 50,
-      fill: fontColor,
-      fontSize: fontSize,
-      fontFamily: fontFamily,
-      fontWeight: fontWeight,
-    });
-
-    
-    canvas.add(additionalText);
-    canvas.renderAll();
-    additionalNameTextRef.current = additionalText;
+    const text = new fabric.IText('نص', { left: 50, top: 50, fontFamily, fontSize, fill: fontColor, fontWeight });
+    canvas.add(text);
+    canvas.setActiveObject(text);
+    canvas.requestRenderAll();
   };
 
-  //  global keydown listener to delete text
-  useEffect(() => {
-    // 1. Define a handler for keydown events
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // 2. Grab our Fabric.js canvas instance from the ref
-      const canvas = fabricCanvasRef.current;
-      if (!canvas) return;  // If it’s not initialized yet, do nothing
-  
-      // 3. Ask Fabric which object (if any) is currently selected
-      const activeObj = canvas.getActiveObject();
-      console.log(activeObj?.type, "type", e.key);
-  
-      // 4. Only proceed if there *is* an active object, and it’s an IText
-      //    Fabric internally identifies editable text objects as type "i-text"
-      if (activeObj && activeObj.type === "i-text") {
-        // 5. If the user pressed the Delete key...
-        if (e.key === "Delete") {
-          // 6. Remove that object from the canvas
-          canvas.remove(activeObj);
-          // 7. Clear any selection state
-          canvas.discardActiveObject();
-          // 8. Redraw the canvas so the change is visible
-          canvas.renderAll();
-        }
-      }
-    };
-  
-    // 9. When this component mounts, start listening to keydown on the whole document
-    document.addEventListener("keydown", handleKeyDown);
-  
-    // 10. And when the component unmounts, clean up by removing that listener
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);  // Empty dependency array means this effect runs only once on mount and cleanup on unmount
-  
+  // Download canvas
   const handleDownload = () => {
-    // if the canvas is not initialized, return exit without error
-    if (!fabricCanvasRef.current) return;
-
-    const dataUrl = fabricCanvasRef.current.toDataURL({
-      format: "png",
-      quality: 1,
-      multiplier: 4,
-    });
-
-    const link = document.createElement("a");
-    link.href = dataUrl;
-    link.download = "greeting-card.png";
-    link.click();
+    const canvas = fabricCanvasRef.current;
+    if (!canvas) return;
+    try {
+      canvas.discardActiveObject();
+      canvas.requestRenderAll();
+      const dataUrl = canvas.toDataURL({ format: 'png', quality: 1, multiplier: 4 });
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = 'greeting-card.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Download failed:', error);
+      alert('Unable to download image.');
+    }
   };
 
   return (
     <div className="flex flex-col lg:flex-row items-center gap-4">
-      <div className="p-2 rounded-md shadow-md">
+      <div className="p-2 rounded-md shadow-md bg-white">
         <canvas ref={canvasRef} />
       </div>
-
       <div className="flex flex-col gap-4">
         <FontSettingsForm
-          fontFamily={fontFamily}
-          setFontFamily={setFontFamily}
-          fontSize={fontSize}
-          setFontSize={setFontSize}
-          fontColor={fontColor}
-          setFontColor={setFontColor}
-          fontWeight={fontWeight}
-          setFontWeight={setFontWeight}
+          fontFamily={fontFamily} setFontFamily={setFontFamily}
+          fontSize={fontSize} setFontSize={setFontSize}
+          fontColor={fontColor} setFontColor={setFontColor}
+          fontWeight={fontWeight} setFontWeight={setFontWeight}
+          
         />
-
-        <button
-          onClick={handleAddAdditionalText}
-          className="bg-[#F8D57E] text-black font-semibold px-3 py-2 rounded-lg hover:opacity-90 transition"
-        >
-          أضافة نص اخر
-        </button>
-
-        <button
-          onClick={handleDownload}
-       
-          className="bg-[#F8D57E] text-black font-semibold px-3 py-2 rounded-lg hover:opacity-90 transition"
-        >
-          تحميل التصميم
-        </button>
+        <button onClick={handleAddAdditionalText} className="bg-[#F8D57E] text-black px-3 py-2 rounded-lg hover:opacity-90 transition">أضافة نص </button>
+        <button onClick={handleDownload} className="bg-[#F8D57E] text-black px-3 py-2 rounded-lg hover:opacity-90 transition">تحميل التصميم</button>
       </div>
     </div>
   );

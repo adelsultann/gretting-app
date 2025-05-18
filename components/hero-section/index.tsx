@@ -61,7 +61,7 @@ export default function Hero() {
 
       <hr className='w-30 h-1  bg-[#F8D57E]' />
         <p className="text-lg text-gray-300 max-w-md">
-          بطاقات تهنئة مخصصة ومصممة للمناسبات الخاصة مثل عيد الفطر، عيد الأضحى، اليوم الوطني، حفلات التخرج، المناسبات العائلية
+          بطاقات تهنئة مخصصة ومصممة للمناسبات الخاصة مثل عيد الفطر، عيد الأضحى حفلات التخرج، المناسبات العائلية
         </p>
 
         <Link className="bg-[#F8D57E] text-black font-semibold px-6 py-2 rounded-lg mt-4 hover:opacity-50 transition"

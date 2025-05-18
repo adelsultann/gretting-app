@@ -9,6 +9,7 @@ import { onAuthStateChanged, signOut, User } from "firebase/auth"; // Import Use
 import { doc,  getDoc, Timestamp, updateDoc } from "firebase/firestore"; // Import updateDoc, Timestamp
 import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
 import { FirebaseError } from "firebase/app";
+import SpinnerLoader from "@/components/ui/spinner";
 
 
 
@@ -199,8 +200,14 @@ export default function DashboardPage() {
   };
 
 
-  if (loading) return <p className="text-center text-black mt-10">Loading Dashboard...</p>;
-   if (!user) return null; // Or a redirect component, although onAuthStateChanged handles it
+  if (loading) return 
+  
+   <section className="min-h-screen flex items-center justify-center bg-[#2B2B2B] text-white text-xl">
+         <SpinnerLoader />
+       </section>
+
+       
+   if (!user) return null; // Or a redirect component, although onAuthStateChanged handles itls
 
   return (
     <section className="min-h-screen bg-[#2B2B2B] text-white px-6 py-10">

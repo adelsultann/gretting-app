@@ -23,7 +23,7 @@ const Testimonials = () => {
             pauseOnMouseEnter: true,
           }}
           loop={true}
-          className="w-full max-w-2xl p-1"
+          className="w-full max-w-xl p-1"
           
         >
           
@@ -45,6 +45,9 @@ const Testimonials = () => {
                      
                       
                       <div className="flex items-center justify-center gap-1  rounded-full px-1 py-1 mt-1">
+                        <FaStar className="text-yellow-600 text-sm" />
+                        <FaStar className="text-yellow-600 text-sm" />
+                        <FaStar className="text-yellow-600 text-sm" />
                         <FaStar className="text-yellow-600 text-sm" />
                         <p className="text-xs ">{item.rating}</p>
                       </div>

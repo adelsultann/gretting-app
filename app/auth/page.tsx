@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import {  createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
 import { auth, db, } from "@/lib/firebase"; // Adjust path if needed
 import { doc, setDoc, Timestamp } from "firebase/firestore"; // Import Timestamp
-import { v4 as uuidv4 } from 'uuid'; // Import uuid library (install: npm install uuid @types/uuid)
+import { v4 as uuidv4 } from 'uuid'; 
 import { FirebaseError } from '@firebase/util'
 
 

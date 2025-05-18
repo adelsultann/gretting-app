@@ -11,12 +11,12 @@ export default function Navbar() {
     <div>
       <Link href={"/occasion"} className="bg-yellow-500 text-black px-4 py-2 
       
-      rounded">ابدا الان</Link>
+      rounded">للأفراد</Link>
     </div>
     
    
-    <div className=" md:flex gap-6">
-    <Link href="/auth" className="text-[#F8D57E] hover:text-yellow-500">صمم بطاقة خاصة بالشركات</Link>
+    <div className="md:flex gap-4 ">
+    <Link href="/auth" className="hidden md:block text-[#F8D57E] hover:text-yellow-500 ">بطاقة للشركات</Link>
     </div>
 
    

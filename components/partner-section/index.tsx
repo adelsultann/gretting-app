@@ -17,7 +17,7 @@ const logos = [
 
 const LogoPartners = () => {
   return (
-    <section className="bg-[#484747] py-10 px-4 mt-10">
+    <section className="bg-[#484747] py-10 px-4 mt-8">
       <div className="w-full mx-auto text-center">
         
         {/* <h2 className="text-lg text-white mb-6 font-semibold">شركاء موثوقون</h2> */}
