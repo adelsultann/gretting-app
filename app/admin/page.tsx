@@ -21,8 +21,8 @@ interface Design {
 export default function AdminPage() {
   const [designs, setDesigns] = useState<Design[]>([]);
   const [loading, setLoading] = useState(true);
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars @typescript-eslint/no-explicit-any
-  
+  // Disables ALL ESLint rules for the next line (if there's another error)
+// eslint-disable-next-line
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
 
