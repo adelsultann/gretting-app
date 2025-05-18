@@ -11,9 +11,9 @@ export default async function PreviewPage({
   searchParams,
 }: {
   searchParams: {
-    design?: string;
-    occasion?: string;
-    org?: string;
+    design?: string | undefined;
+    occasion?: string | undefined;
+    org?: string | undefined;
   };
 }) {
   const { design: designId, occasion, org: orgId } = searchParams;
