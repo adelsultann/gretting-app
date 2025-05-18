@@ -6,6 +6,7 @@ import { onAuthStateChanged, getIdTokenResult } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 import { collection, getDocs, updateDoc, doc, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface Design {
   id: string;
@@ -20,6 +21,7 @@ interface Design {
 export default function AdminPage() {
   const [designs, setDesigns] = useState<Design[]>([]);
   const [loading, setLoading] = useState(true);
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
 
@@ -31,6 +33,8 @@ export default function AdminPage() {
       }
 
       const token = await getIdTokenResult(currentUser);
+         // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+
       if (token.claims.admin !== true) {
         alert("Access denied: Admins only");
         router.push("/");
@@ -74,7 +78,7 @@ export default function AdminPage() {
           <div className="space-y-6">
             {designs.map((design) => (
               <div key={design.id} className="bg-[#484747] p-4 rounded-md">
-                <img
+                <Image
                   src={design.url}
                   alt="Design"
                   className="w-full max-w-sm rounded-md border mb-2"
