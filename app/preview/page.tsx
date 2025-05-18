@@ -10,13 +10,13 @@ export const metadata: Metadata = {
 export default async function PreviewPage({
   searchParams,
 }: {
-  searchParams: {
+  searchParams:  Promise<{
     design?: string | undefined;
     occasion?: string | undefined;
     org?: string | undefined;
-  };
+  }>;
 }) {
-  const { design: designId, occasion, org: orgId } = searchParams;
+  const { design: designId, occasion, org: orgId } =  await searchParams;
 
   let companyLogo: string | null = null;
   if (orgId) {
