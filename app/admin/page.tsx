@@ -22,6 +22,7 @@ export default function AdminPage() {
   const [designs, setDesigns] = useState<Design[]>([]);
   const [loading, setLoading] = useState(true);
    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
 
@@ -33,7 +34,7 @@ export default function AdminPage() {
       }
 
       const token = await getIdTokenResult(currentUser);
-         // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+       
 
       if (token.claims.admin !== true) {
         alert("Access denied: Admins only");
