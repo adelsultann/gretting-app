@@ -14,8 +14,11 @@ export type FabricCardProps = {
 
 export default function FabricCard({ userName, backgroundImage, companyLogo }: FabricCardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const [selectedObject, setSelectedObject] = useState<fabric.Object | null>(null);
+  const [canvasInitialized, setCanvasInitialized] = useState(false);
+  const [canvasDimensions, setCanvasDimensions] = useState({ width: 500, height: 700 });
 
   const [fontFamily, setFontFamily] = useState("Noto Kufi Arabic");
   const [fontSize, setFontSize] = useState(28);
@@ -33,17 +36,83 @@ export default function FabricCard({ userName, backgroundImage, companyLogo }: F
     });
   };
 
+  // Calculate responsive dimensions based on container width
+  const calculateDimensions = () => {
+    if (!containerRef.current) return { width: 500, height: 700 };
+    
+    const container = containerRef.current;
+    // Get the available width (accounting for padding/margins)
+    const containerWidth = container.clientWidth - 16; // 16px for padding
+    
+    // For mobile: use full container width but cap at original size
+    const maxWidth = Math.min(500, containerWidth);
+    // Maintain aspect ratio
+    const scaleFactor = maxWidth / 500;
+    const height = Math.round(700 * scaleFactor);
+    
+    return { width: maxWidth, height };
+  };
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      // Get new dimensions
+      const newDimensions = calculateDimensions();
+      
+      // Update state (this will trigger canvas resize)
+      setCanvasDimensions(newDimensions);
+    };
+
+    // Add resize listener
+    window.addEventListener('resize', handleResize);
+    // Initial calculation
+    handleResize();
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Initialize and set up canvas
   useEffect(() => {
     if (!canvasRef.current) return;
-    const canvas = new fabric.Canvas(canvasRef.current, { width: 500, height: 700, selection: true });
+    
+    // If we already initialized the canvas, resize it instead of recreating
+    if (fabricCanvasRef.current && canvasInitialized) {
+      const canvas = fabricCanvasRef.current;
+      canvas.setWidth(canvasDimensions.width);
+      canvas.setHeight(canvasDimensions.height);
+      
+      // Scale the canvas contents when resizing
+      const scaleFactor = canvasDimensions.width / 500;
+      canvas.setZoom(scaleFactor);
+      
+      // Resize background image
+      if (canvas.backgroundImage) {
+        const bgImg = canvas.backgroundImage as fabric.Image;
+        bgImg.scaleToWidth(canvas.getWidth() / canvas.getZoom());
+        canvas.requestRenderAll();
+      }
+      
+      return;
+    }
+    
+    // Create new canvas
+    const canvas = new fabric.Canvas(canvasRef.current, {
+      width: canvasDimensions.width,
+      height: canvasDimensions.height,
+      selection: true
+    });
     fabricCanvasRef.current = canvas;
+    
+    // Calculate scaling factor
+    const scaleFactor = canvasDimensions.width / 500;
+    canvas.setZoom(scaleFactor);
 
     (async () => {
       try {
         // Background image
         const bgEl = await loadImageElement(backgroundImage);
         const bgImg = new fabric.Image(bgEl);
-        bgImg.scaleToWidth(canvas.getWidth());
+        bgImg.scaleToWidth(canvas.getWidth() / canvas.getZoom());
         canvas.backgroundImage = bgImg;
         canvas.requestRenderAll();
 
@@ -57,7 +126,6 @@ export default function FabricCard({ userName, backgroundImage, companyLogo }: F
           fontWeight,
         });
         canvas.add(nameText);
-        //canvas.setActiveObject(nameText);
 
         // Company logo
         if (companyLogo) {
@@ -89,13 +157,16 @@ export default function FabricCard({ userName, backgroundImage, companyLogo }: F
       }
     };
     document.addEventListener('keydown', handleKeyDown);
+    
+    // Mark as initialized
+    setCanvasInitialized(true);
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       canvas.dispose();
       fabricCanvasRef.current = null;
     };
-  }, [backgroundImage, companyLogo]);
+  }, [backgroundImage, companyLogo, canvasDimensions]);
 
   // Update selected object style
   useEffect(() => {
@@ -109,7 +180,14 @@ export default function FabricCard({ userName, backgroundImage, companyLogo }: F
   const handleAddAdditionalText = () => {
     const canvas = fabricCanvasRef.current;
     if (!canvas) return;
-    const text = new fabric.IText('نص', { left: 50, top: 50, fontFamily, fontSize, fill: fontColor, fontWeight });
+    const text = new fabric.IText('نص', { 
+      left: 100, 
+      top: 500, 
+      fontFamily, 
+      fontSize, 
+      fill: fontColor, 
+      fontWeight 
+    });
     canvas.add(text);
     canvas.setActiveObject(text);
     canvas.requestRenderAll();
@@ -122,7 +200,15 @@ export default function FabricCard({ userName, backgroundImage, companyLogo }: F
     try {
       canvas.discardActiveObject();
       canvas.requestRenderAll();
-      const dataUrl = canvas.toDataURL({ format: 'png', quality: 1, multiplier: 4 });
+      
+      // For download, use original dimensions (500x700) for better quality
+      const scaleFactor = 500 / canvas.getWidth();
+      const dataUrl = canvas.toDataURL({ 
+        format: 'png', 
+        quality: 1, 
+        multiplier: 4 * scaleFactor // Adjust multiplier based on current size
+      });
+      
       const link = document.createElement('a');
       link.href = dataUrl;
       link.download = 'greeting-card.png';
@@ -136,20 +222,31 @@ export default function FabricCard({ userName, backgroundImage, companyLogo }: F
   };
 
   return (
-    <div className="flex flex-col lg:flex-row items-center gap-4">
-      <div className="p-2 rounded-md shadow-md bg-white">
-        <canvas ref={canvasRef} />
-      </div>
-      <div className="flex flex-col gap-4">
-        <FontSettingsForm
-          fontFamily={fontFamily} setFontFamily={setFontFamily}
-          fontSize={fontSize} setFontSize={setFontSize}
-          fontColor={fontColor} setFontColor={setFontColor}
-          fontWeight={fontWeight} setFontWeight={setFontWeight}
-          
-        />
-        <button onClick={handleAddAdditionalText} className="bg-[#F8D57E] text-black px-3 py-2 rounded-lg hover:opacity-90 transition">أضافة نص </button>
-        <button onClick={handleDownload} className="bg-[#F8D57E] text-black px-3 py-2 rounded-lg hover:opacity-90 transition">تحميل التصميم</button>
+    <div ref={containerRef} className="w-full max-w-4xl mx-auto">
+      <div className="flex flex-col md:flex-row items-start justify-center gap-3">
+        <div className="w-full md:w-auto p-2 rounded-md shadow-md bg-white">
+          <canvas ref={canvasRef} />
+        </div>
+        <div className="w-full md:w-72 flex flex-col gap-4">
+          <FontSettingsForm
+            fontFamily={fontFamily} setFontFamily={setFontFamily}
+            fontSize={fontSize} setFontSize={setFontSize}
+            fontColor={fontColor} setFontColor={setFontColor}
+            fontWeight={fontWeight} setFontWeight={setFontWeight}
+          />
+          <button 
+            onClick={handleAddAdditionalText} 
+            className="bg-[#F8D57E] text-black px-3 py-2 rounded-lg hover:opacity-90 transition w-full"
+          >
+            أضافة نص
+          </button>
+          <button 
+            onClick={handleDownload} 
+            className="bg-[#F8D57E] text-black px-3 py-2 rounded-lg hover:opacity-90 transition w-full"
+          >
+            تحميل التصميم
+          </button>
+        </div>
       </div>
     </div>
   );

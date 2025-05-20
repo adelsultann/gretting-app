@@ -1,5 +1,5 @@
 import React from "react";
-import "@fontsource/cairo"; // Import Google Fonts
+import "@fontsource/cairo"; 
 import "@fontsource/amiri";
 import "@fontsource/noto-kufi-arabic";
 
