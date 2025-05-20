@@ -93,69 +93,76 @@ export default function AuthPage() {
   };
 
   
-   return (
-     <section className="min-h-screen bg-[#2B2B2B] flex justify-center items-center text-white px-4">
-       <form
-         onSubmit={handleSubmit}
-         className="bg-[#484747] p-6 rounded-xl max-w-md w-full space-y-4 shadow-lg"
-       >
-         <h1 className="text-xl font-bold text-center">
-           {isRegister ? "إنشاء حساب جديد" : "تسجيل الدخول"}
-         </h1>
-         <input
-           type="email"
-           required
-           value={email}
-           onChange={(e) => setEmail(e.target.value)}
-           placeholder="البريد الإلكتروني"
-           className="w-full p-2 rounded-md bg-[#2C2B2B] text-white outline-none"
-         />
+   
+    return (
+      <section className="min-h-screen bg-[#2B2B2B] flex flex-col justify-center items-center text-white px-4">
+      {/* Intro text for registration functionality */}
+      <div className="max-w-md w-full mb-6 text-center">
+        <p className="bg-[#484747] p-4 rounded-md text-lg leading-relaxed">
+  عند التسجيل، يمكنك رفع صورة لشعار الشركة ومشاركة
 
-         <input
-           type="password"
-           required
-           value={password}
-           onChange={(e) => setPassword(e.target.value)}
-           placeholder="كلمة المرور"
-           className="w-full p-2 rounded-md bg-[#2B2B2B] text-white outline-none"
-         />
-         
-         {isRegister && (
-           <input
-             type="text"
-             required
-             value={companyName}
-             onChange={(e) => setCompanyName(e.target.value)}
-             placeholder="اسم الشركة"
-             className="w-full p-2 rounded-md bg-[#2B2B2B] text-white outline-none"
-           />
-         )}
-         {error && <p className="text-red-400 text-sm text-center">{error}</p>}
-         <button
-           type="submit"
-           className="bg-[#F8D57E] text-black font-semibold w-full py-2 rounded-md hover:opacity-90 transition"
-         >
-           {isRegister ? "تسجيل حساب جديد" : "تسجيل الدخول"}
-         </button>
+<span className="font-bold text-[#BFAFF2] ">رابط خاص لشركتك  </span>
+ مع الموظفين ليستطيعوا استخدام التصاميم مع شعار الشركة دون الحاجة للتسجيل.
+</p>
+        <p className="mt-4 text-2xl">
+          لتصميم بطاقة تهنئة فردية ومن دون تسجيل، <a href="/occasion" className="text-[#BFAFF2] underline font-semibold">اضغط هنا</a>
+        </p>
+      </div>
 
+        <form
+          onSubmit={handleSubmit}
+          className="bg-[#484747] p-6 rounded-xl max-w-md w-full space-y-4 shadow-lg"
+        >
+          <h1 className="text-xl font-bold text-center">
+            {isRegister ? "إنشاء حساب جديد" : "تسجيل الدخول"}
+          </h1>
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="البريد الإلكتروني"
+            className="w-full p-2 rounded-md bg-[#2C2B2B] text-white outline-none"
+          />
 
-         <p className="text-sm text-center mt-2">
+          <input
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="كلمة المرور"
+            className="w-full p-2 rounded-md bg-[#2B2B2B] text-white outline-none"
+          />
 
-          
+          {isRegister && (
+            <input
+              type="text"
+              required
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              placeholder="اسم الشركة"
+              className="w-full p-2 rounded-md bg-[#2B2B2B] text-white outline-none"
+            />
+          )}
+          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+          <button
+            type="submit"
+            className="bg-[#F8D57E] text-black font-semibold w-full py-2 rounded-md hover:opacity-90 transition"
+          >
+            {isRegister ? "تسجيل حساب جديد" : "تسجيل الدخول"}
+          </button>
 
-  
-     {isRegister ? "هل لديك حساب؟"
-            : "ليس لديك حساب؟"}{" "}
-  <br></br>
-           <button
-             type="button"
-             onClick={() => setIsRegister(!isRegister)}
-             className="text-[#BFAFF2] underline"
-           >
-             {isRegister ? "سجّل الدخول" : "سجل الان"}
-           </button>
-         </p>
-       </form>
-     </section>
+          <p className="text-sm text-center mt-2">
+            {isRegister ? "هل لديك حساب؟" : "ليس لديك حساب؟"} <br/>
+            <button
+              type="button"
+              onClick={() => setIsRegister(!isRegister)}
+              className="text-[#BFAFF2] underline"
+            >
+              {isRegister ? "سجّل الدخول" : "سجل الآن"}
+            </button>
+          </p>
+        </form>
+      </section>
    );
 }
