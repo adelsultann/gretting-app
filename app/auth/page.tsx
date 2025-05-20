@@ -152,12 +152,12 @@ export default function AuthPage() {
             {isRegister ? "تسجيل حساب جديد" : "تسجيل الدخول"}
           </button>
 
-          <p className="text-sm text-center mt-2">
+          <p className=" text-md text-center mt-2">
             {isRegister ? "هل لديك حساب؟" : "ليس لديك حساب؟"} <br/>
             <button
               type="button"
               onClick={() => setIsRegister(!isRegister)}
-              className="text-[#BFAFF2] underline"
+              className="cursor-pointer text-[#BFAFF2] underline"
             >
               {isRegister ? "سجّل الدخول" : "سجل الآن"}
             </button>
