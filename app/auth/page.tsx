@@ -8,6 +8,7 @@ import { auth, db, } from "@/lib/firebase"; // Adjust path if needed
 import { doc, setDoc, Timestamp } from "firebase/firestore"; // Import Timestamp
 import { v4 as uuidv4 } from 'uuid'; 
 import { FirebaseError } from '@firebase/util'
+import Navbar from "@/components/Navbar";
 
 
 
@@ -95,6 +96,11 @@ export default function AuthPage() {
   
    
     return (
+
+     
+      <div>
+        <Navbar />
+    
       <section className="min-h-screen bg-[#2B2B2B] flex flex-col justify-center items-center text-white px-4">
       {/* Intro text for registration functionality */}
       <div className="max-w-md w-full mb-6 text-center">
@@ -164,5 +170,7 @@ export default function AuthPage() {
           </p>
         </form>
       </section>
+      
+      </div>
    );
 }

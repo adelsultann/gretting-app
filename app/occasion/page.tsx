@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation"; 
 import Image from "next/image";
 import { occasions } from "@/lib/data/occasions";
+import Navbar from "@/components/Navbar";
 
 
 
@@ -21,6 +22,10 @@ export default function OccasionPage() {
   };
 
    return (
+
+    <div>
+           <Navbar />
+
      <section className="min-h-screen bg-[#2B2B2B] text-white px-4 py-10">
 
       {/* the mx-auto is used to center the content horizontally within its parent container */}
@@ -56,5 +61,6 @@ export default function OccasionPage() {
          </div>
        </div>
      </section>
+     </div>
    );
 }
